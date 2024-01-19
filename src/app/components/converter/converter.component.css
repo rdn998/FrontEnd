@@ -1,0 +1,33 @@
+.container-converter {
+    width: 100%;
+}
+
+.converter {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.fav-result {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.title {
+    margin-top: 13px;
+    margin-left: 20px;
+    font-size: 1.5rem;
+}
+
+.content {
+    width: 45%;
+}
+
+@media only screen and (min-width:1200px){
+    .converter {
+        flex-direction: row;
+    }
+}

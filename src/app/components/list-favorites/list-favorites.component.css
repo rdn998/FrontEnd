@@ -1,0 +1,23 @@
+.list-saved {
+    margin-top: 40px;
+    width: 92%;
+    display: flex;
+    flex-direction: column;
+}
+
+.saved {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media only screen and (min-width:1200px){
+    .list-saved {
+        width: 50%;
+        margin-top: 100px;
+    }
+}

@@ -1,0 +1,23 @@
+<div class="container-converter">
+    <div>
+        <h2 class="title">convert</h2>
+    </div>
+    <div class="converter padding">
+        <div class="content">
+            <select (change)="convert($event)" name="covert" id="convert">
+                <option *ngFor="let data of select" value="{{data}}">{{data}}</option>
+            </select>
+        </div>
+        <div class="content">
+            <input type="text" name="cuantity" id="cuantity"><label for="convert">km</label>
+        </div>
+    </div>
+    <div class="fav-result padding">
+        <div class="content">
+            <i class="fa-regular fa-heart"></i>
+        </div>
+        <div class="content">
+            <p></p>
+        </div>
+    </div>
+</div>
