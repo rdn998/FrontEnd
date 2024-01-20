@@ -1,8 +1,6 @@
-<div class="list-saved">
-    <div class="saved">
-        <p>Saved</p>
-    </div>
-    <div class="list">
-        <app-favorites></app-favorites>
-    </div>
+<div class="saved">
+    <p>Saved</p>
+</div>
+<div class="list">
+    <app-favorites class="favs" *ngFor="let fav of aFavs" [fav] = 'fav'></app-favorites>
 </div>

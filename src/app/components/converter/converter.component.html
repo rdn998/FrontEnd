@@ -3,22 +3,31 @@
         <h2 class="title">convert</h2>
     </div>
     <div class="converter padding">
-        <div class="content">
-            <select #converter (change)="convert($event)" name="covert" id="convert">
-                <option *ngFor="let data of select" value="{{data}}">{{data}}</option>
-            </select>
-            <img src="../assets/img/Icon.svg" alt="Icono convertidor unidades" class="icon-convert">
+        <div class="content converter-content">
+            <div class="content-princ">
+                <select #converter (change)="convert($event)" name="covert" id="convert">
+                    <option *ngFor="let data of select" value="{{data}}">{{data}}</option>
+                </select>
+            </div>
+            <div class="content-secun">
+                <img src="../assets/img/icon-converter-white.svg" alt="Icono convertidor unidades" class="icon-convert">
+            </div>
         </div>
-        <div class="content">
-            <input type="text" name="cuantity" id="cuantity" [(ngModel)]="cuantity"><label for="convert">{{unity}}</label>
+        <div class="content converter-content">
+            <div class="content-princ">
+                <input (change)="write()" (keyup)="write()" type="number" name="cuantity" id="cuantity" [(ngModel)]="cuantity">
+            </div>
+            <div class="content-secun">
+                <label for="cuantity">{{unity}}</label>
+            </div>
         </div>
     </div>
     <div class="fav-result padding">
         <div class="content">
             <i (click)="bookmark()" class="fa-regular fa-heart"></i>
         </div>
-        <div class="content">
-            <p class="result">{{result}} {{unityCon}}</p>
+        <div class="content content-result">
+            <h2 class="result">{{result}}</h2><h3 class="unityCon">{{unityCon}}</h3>
         </div>
     </div>
 </div>

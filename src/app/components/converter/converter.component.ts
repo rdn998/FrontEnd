@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Unity } from '../../models/Unity';
+import { Subscription } from 'rxjs';
+import { CommunicationService } from '../../services/communication.service';
 
 @Component({
   selector: 'app-converter',
@@ -7,8 +9,9 @@ import { Unity } from '../../models/Unity';
   styleUrl: './converter.component.css'
 })
 
-export class ConverterComponent {
+export class ConverterComponent implements OnInit, OnDestroy {
 
+  subscription:Subscription;
   select:String[] = ["km → miles","miles → km","cm → inches", "inches → cm", "feet → meters", "meters → feet", "yard → milimeters", "milimeters → yards"];
   aUnity:Unity[] = [
     {name:"miles", cuantity: 0.621371},
@@ -18,23 +21,60 @@ export class ConverterComponent {
     {name:"meters", cuantity: 3.28084},
     {name:"feet", cuantity: 0.3048},
     {name:"milimeters", cuantity: 914.4},
-    {name:"yards", cuantity: 0.00109361}];
+    {name:"yards", cuantity: 0.00109361}
+  ];
   result:number = 0;
-  unity:string = "miles";
-  unityCon:string = "km";
+  unity:string = "km";
+  unityCon:string = "miles";
   cuantity:number = 0;
+  aFavs:string[] = [];
+
+  constructor(
+    private _communicationService:CommunicationService
+  ){}
 
   convert(e:any) {
     this.unity = (e.target.selectedOptions[0].value.split('→')[0]).trim();
     this.unityCon = (e.target.selectedOptions[0].value.split('→')[1]).trim();
-    let aUnity:Unity[] = this.aUnity.filter((u) => u.name == this.unityCon);
+    this.calculate();
+  }
 
+  private calculate() {
+    let aUnity:Unity[] = this.aUnity.filter((u) => u.name == this.unityCon);
     this.result = Number.parseFloat((aUnity[0].cuantity * this.cuantity).toFixed(2));
   }
 
+  write() {
+    this.calculate();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.subscribeFavs();
+  }
+
   bookmark() {
-    JSON.stringify(localStorage.getItem('favs'));
-    localStorage.setItem('fav', '');
+    if(this.cuantity != 0) {
+      this.getFavs();
+      this.aFavs.push(`${this.cuantity} ${this.unity} → ${this.result} ${this.unityCon}`);
+      localStorage.setItem('favs', JSON.stringify(this.aFavs));
+      this._communicationService.favsChanges(true);
+    }
+  }
+
+  subscribeFavs():void {
+    this.subscription = this._communicationService.favs$.subscribe({
+      next: (datos) => {this.getFavs()},
+      error: (error) => {},
+      complete: () => {}
+    });
+  }
+
+  getFavs() {
+    if(localStorage.getItem('favs')) this.aFavs = JSON.parse(localStorage.getItem('favs') || '');
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-favorites',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrl: './favorites.component.css'
 })
 export class FavoritesComponent {
-
+  @Input() fav:string;
 }
