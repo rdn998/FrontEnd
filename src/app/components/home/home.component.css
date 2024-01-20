@@ -7,7 +7,7 @@
 }
 
 .container-converter {
-    width: 92%;
+    width: 100%;
     border-radius: 21px;
     border: 2px solid var(--blanco);
     color: var(--blanco);
@@ -25,9 +25,14 @@
     flex-direction: column;
 }
 
-@media only screen and (min-width:1200px){
+@media only screen and (min-width:1200px) {
     .container-converter {
         width: 50%;
+    }
+
+    .container {
+        width: 65%;
+        align-items: flex-end;
     }
 
     .list-saved {
