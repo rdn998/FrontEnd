@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Unity } from '../../models/Unity';
 import { Subscription } from 'rxjs';
 import { CommunicationService } from '../../services/communication.service';
@@ -30,7 +30,8 @@ export class ConverterComponent implements OnInit, OnDestroy {
   aFavs:string[] = [];
 
   constructor(
-    private _communicationService:CommunicationService
+    private _communicationService:CommunicationService,
+    private elementRef: ElementRef<HTMLElement>
   ){}
 
   convert(e:any) {
@@ -48,20 +49,28 @@ export class ConverterComponent implements OnInit, OnDestroy {
     this.calculate();
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
+  changeConverter() {
+    let unity = this.unity;
+    let unityCon = this.unityCon;
+    let cuantity = this.cuantity;
+    let result = this.result;
 
-  ngOnInit(): void {
-    this.subscribeFavs();
+    this.unity = unityCon;
+    this.cuantity = result;
+    this.unityCon = unity;
+    this.result = cuantity;
+
+    const element:any = document.getElementById('convert') || {value: ''};
+    element.value = `${this.unity} → ${this.unityCon}`;
   }
 
   bookmark() {
     if(this.cuantity != 0) {
-      this.getFavs();
       this.aFavs.push(`${this.cuantity} ${this.unity} → ${this.result} ${this.unityCon}`);
       localStorage.setItem('favs', JSON.stringify(this.aFavs));
       this._communicationService.favsChanges(true);
+      this.cuantity = 0;
+      this.result = 0;
     }
   }
 
@@ -75,6 +84,14 @@ export class ConverterComponent implements OnInit, OnDestroy {
 
   getFavs() {
     if(localStorage.getItem('favs')) this.aFavs = JSON.parse(localStorage.getItem('favs') || '');
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.subscribeFavs();
   }
 
 }
