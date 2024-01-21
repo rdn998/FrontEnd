@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommunicationService } from '../../services/communication.service';
+import { ConversionService } from '../../services/conversion.service';
+import { Conversion } from '../../models/Conversion';
 
 @Component({
   selector: 'app-list-favorites',
@@ -10,14 +12,24 @@ import { CommunicationService } from '../../services/communication.service';
 export class ListFavoritesComponent implements OnInit {
   
   subscription:Subscription;
-  aFavs:string[] = [];
+  //aFavs:string[] = [];
+  aFavsCon:Conversion[] = [];
 
   constructor(
-    private _communicationService:CommunicationService
+    private _communicationService:CommunicationService,
+    private _conversionService:ConversionService
   ){}
 
-  getFavs() {
+  /*getFavs() {
     this.aFavs = JSON.parse(localStorage.getItem('favs') || '');
+  }*/
+
+  getData() {
+    this._conversionService.get().subscribe({
+      next: (datos) => {this.aFavsCon = datos},
+      error: (error) => {},
+      complete: () => {}
+    })
   }
 
   ngOnInit(): void {
@@ -30,7 +42,7 @@ export class ListFavoritesComponent implements OnInit {
 
   subscribeFavs():void {
     this.subscription = this._communicationService.favs$.subscribe({
-      next: (datos) => {this.getFavs()},
+      next: (datos) => {this.getData()},
       error: (error) => {},
       complete: () => {}
     });
